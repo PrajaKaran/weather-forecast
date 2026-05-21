@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Moon, Sun, MapPin } from 'lucide-react';
 import WeatherCard from './WeatherCard';
+import MiniEarth from './MiniEarth';
 import { fetchWeatherData } from '../services/weatherApi';
 
 const WeatherApp = () => {
@@ -95,6 +96,27 @@ const WeatherApp = () => {
     }
   };
 
+  const handleGlobeClick = async (lat, lng) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchWeatherData({ lat, lon: lng });
+      setWeatherData(data);
+      setCity(''); // Clear search input
+      
+      // Update recent searches
+      setRecentSearches(prev => {
+        const newSearches = [data.name, ...prev.filter(s => s !== data.name)].slice(0, 5);
+        localStorage.setItem('recentSearches', JSON.stringify(newSearches));
+        return newSearches;
+      });
+    } catch (err) {
+      setError("Could not fetch weather for this location.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleSearch();
@@ -149,6 +171,11 @@ const WeatherApp = () => {
             ))}
           </div>
         )}
+
+        {/* 3D Mini Earth Section */}
+        <div className="globe-wrapper animate-fade-in">
+          <MiniEarth onGlobeClick={handleGlobeClick} />
+        </div>
         
         {loading && <div className="loading-spinner"></div>}
         
