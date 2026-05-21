@@ -43,7 +43,6 @@ const MiniEarth = ({ onGlobeClick }) => {
         atmosphereAltitude={0.15}
         onGlobeClick={(obj) => onGlobeClick(obj.lat, obj.lng)}
       />
-      <div className="globe-hint">🌍 Click anywhere on Earth to get the weather!</div>
     </div>
   );
 };
