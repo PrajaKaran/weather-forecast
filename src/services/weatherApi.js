@@ -68,7 +68,7 @@ export const fetchWeatherData = async (query) => {
       params: {
         latitude: location.latitude,
         longitude: location.longitude,
-        current: 'temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,pressure_msl,uv_index',
+        current: 'temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,pressure_msl,uv_index,apparent_temperature,visibility',
         hourly: 'temperature_2m,weather_code',
         daily: 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset',
         timezone: 'auto'
@@ -99,12 +99,16 @@ export const fetchWeatherData = async (query) => {
       country: location.country_code,
       current: {
         temp: Math.round(data.current.temperature_2m),
+        feelsLike: Math.round(data.current.apparent_temperature),
         humidity: data.current.relative_humidity_2m,
         windSpeed: (data.current.wind_speed_10m / 3.6).toFixed(1),
         pressure: data.current.pressure_msl,
         uvIndex: data.current.uv_index,
+        visibility: data.current.visibility,
         desc: currentInfo.desc,
-        icon: currentInfo.icon
+        icon: currentInfo.icon,
+        sunrise: new Date(data.daily.sunrise[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        sunset: new Date(data.daily.sunset[0]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       },
       hourly: hourlyData,
       daily: dailyData

@@ -9,11 +9,17 @@ const WeatherApp = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [theme, setTheme] = useState('dark');
+  const [unit, setUnit] = useState('celsius');
+  const [recentSearches, setRecentSearches] = useState([]);
 
-  // Initialize theme from system preference or default to dark
+  // Initialize theme and recent searches
   useEffect(() => {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
       setTheme('light');
+    }
+    const saved = localStorage.getItem('recentSearches');
+    if (saved) {
+      setRecentSearches(JSON.parse(saved));
     }
   }, []);
 
@@ -24,6 +30,10 @@ const WeatherApp = () => {
 
   const toggleTheme = () => {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
+
+  const toggleUnit = () => {
+    setUnit(prev => prev === 'celsius' ? 'fahrenheit' : 'celsius');
   };
 
   // Fetch geolocation on initial load
@@ -71,6 +81,13 @@ const WeatherApp = () => {
       const data = await fetchWeatherData(targetCity);
       setWeatherData(data);
       setCity('');
+      
+      // Update recent searches
+      setRecentSearches(prev => {
+        const newSearches = [data.name, ...prev.filter(s => s !== data.name)].slice(0, 5);
+        localStorage.setItem('recentSearches', JSON.stringify(newSearches));
+        return newSearches;
+      });
     } catch (err) {
       setError(err.message);
     } finally {
@@ -92,10 +109,15 @@ const WeatherApp = () => {
         <div className="orb-2"></div>
       </div>
 
-      {/* Theme Toggle Button */}
-      <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
-        {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
-      </button>
+      {/* Top Controls */}
+      <div className="top-controls">
+        <button className="unit-toggle" onClick={toggleUnit} aria-label="Toggle unit">
+          {unit === 'celsius' ? '°C' : '°F'}
+        </button>
+        <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
+          {theme === 'dark' ? <Sun size={24} /> : <Moon size={24} />}
+        </button>
+      </div>
 
       <div className="dashboard-container animate-fade-in">
         <h1 className="app-title">Weather Forecast</h1>
@@ -118,12 +140,22 @@ const WeatherApp = () => {
           </button>
         </div>
         
+        {recentSearches.length > 0 && (
+          <div className="recent-searches animate-fade-in">
+            {recentSearches.map((s, i) => (
+              <button key={i} className="recent-search-tag" onClick={() => handleSearch(s)}>
+                {s}
+              </button>
+            ))}
+          </div>
+        )}
+        
         {loading && <div className="loading-spinner"></div>}
         
         {error && <div className="error-message">{error}</div>}
         
         {!loading && !error && weatherData && (
-          <WeatherCard weatherData={weatherData} />
+          <WeatherCard weatherData={weatherData} unit={unit} />
         )}
 
       </div>
