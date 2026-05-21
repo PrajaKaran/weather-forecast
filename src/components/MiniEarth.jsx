@@ -1,16 +1,31 @@
 import React, { useRef, useEffect } from 'react';
 import Globe from 'react-globe.gl';
+import * as THREE from 'three';
 
 const MiniEarth = ({ onGlobeClick }) => {
   const globeEl = useRef();
 
   useEffect(() => {
-    // Configure globe controls
+    // Configure globe controls and lighting
     if (globeEl.current) {
       const controls = globeEl.current.controls();
       controls.autoRotate = true;
-      controls.autoRotateSpeed = 1.5;
+      controls.autoRotateSpeed = 2.0;
       controls.enableZoom = false;
+
+      // Make the earth bright and realistic
+      const scene = globeEl.current.scene();
+      
+      // Remove any existing lights to prevent duplicate lights on re-renders
+      const lights = scene.children.filter(c => c.isLight);
+      lights.forEach(l => scene.remove(l));
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 2.5); // Very bright ambient light
+      scene.add(ambientLight);
+      
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
+      directionalLight.position.set(1, 1, 1);
+      scene.add(directionalLight);
     }
   }, []);
 
@@ -23,6 +38,9 @@ const MiniEarth = ({ onGlobeClick }) => {
         globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
         backgroundColor="rgba(0,0,0,0)"
+        showAtmosphere={true}
+        atmosphereColor="#3a228a"
+        atmosphereAltitude={0.2}
         onGlobeClick={(obj) => onGlobeClick(obj.lat, obj.lng)}
       />
       <div className="globe-hint">✨ Click anywhere on Earth for live weather!</div>
