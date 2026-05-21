@@ -20,11 +20,11 @@ const MiniEarth = ({ onGlobeClick }) => {
       const lights = scene.children.filter(c => c.isLight);
       lights.forEach(l => scene.remove(l));
 
-      const ambientLight = new THREE.AmbientLight(0xffffff, 2.5); // Very bright ambient light
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.2); // Balanced ambient light
       scene.add(ambientLight);
       
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 1.5);
-      directionalLight.position.set(1, 1, 1);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 2.0);
+      directionalLight.position.set(5, 3, 5);
       scene.add(directionalLight);
     }
   }, []);
@@ -35,15 +35,15 @@ const MiniEarth = ({ onGlobeClick }) => {
         ref={globeEl}
         height={300}
         width={300}
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
+        globeImageUrl="//unpkg.com/three-globe/example/img/earth-day.jpg"
         bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
         backgroundColor="rgba(0,0,0,0)"
         showAtmosphere={true}
         atmosphereColor="#3a228a"
-        atmosphereAltitude={0.2}
+        atmosphereAltitude={0.15}
         onGlobeClick={(obj) => onGlobeClick(obj.lat, obj.lng)}
       />
-      <div className="globe-hint">✨ Click anywhere on Earth for live weather!</div>
+      <div className="globe-hint">🌍 Click anywhere on Earth to get the weather!</div>
     </div>
   );
 };
