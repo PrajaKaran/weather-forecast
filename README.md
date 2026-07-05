@@ -14,3 +14,12 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+ ![Image Alt](https://github.com/PrajaKaran/weather-forecast/blob/main/Screenshot%202026-07-05%20084254.png?raw=true)
+![Image Alt](https://github.com/PrajaKaran/weather-forecast/blob/main/Screenshot%202026-07-05%20084311.png?raw=true)
+![Image Alt](https://github.com/PrajaKaran/weather-forecast/blob/main/Screenshot%202026-07-05%20084350.png?raw=true)
+![Image Alt](https://github.com/PrajaKaran/weather-forecast/blob/main/Screenshot%202026-07-05%20084402.png?raw=true)
+![Image Alt](https://github.com/PrajaKaran/weather-forecast/blob/main/Screenshot%202026-07-05%20084410.png?raw=true)
+![Image Alt](https://github.com/PrajaKaran/weather-forecast/blob/main/Screenshot%202026-07-05%20084907.png?raw=true)
+![Image Alt](https://github.com/PrajaKaran/weather-forecast/blob/main/Screenshot%202026-07-05%20084937.png?raw=true)
+![Image Alt](https://github.com/PrajaKaran/weather-forecast/blob/main/Screenshot%202026-07-05%20085000.png?raw=true)
